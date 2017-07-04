@@ -23,14 +23,8 @@
     <Content Include="wwwroot\css\style-responsive.css" />
     <Content Include="wwwroot\css\style-responsive.min.css" />
     <Content Include="wwwroot\css\style.css" />
-    <Content Include="wwwroot\css\style.min.css" />
-    <Content Include="wwwroot\css\theme\black.css" />
-    <Content Include="wwwroot\css\theme\blue.css" />
-    <Content Include="wwwroot\css\theme\default.css" />
-    <Content Include="wwwroot\css\theme\orange.css" />
-    <Content Include="wwwroot\css\theme\purple.css" />
-    <Content Include="wwwroot\css\theme\red.css" />
     <Content Include="wwwroot\images\android-chrome-48x48.png" />
+    <Content Include="wwwroot\images\logo.png" />
     <Content Include="wwwroot\images\logo_square_200.png" />
     <Content Include="wwwroot\js\apps.js" />
     <Content Include="wwwroot\js\apps.min.js" />

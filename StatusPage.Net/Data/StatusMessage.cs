@@ -24,6 +24,7 @@ namespace StatusPage.Net.Data
         Down,
         Investigating,
         Identified,
-        Monitoring
+        Monitoring,
+        WellShit
     }
 }

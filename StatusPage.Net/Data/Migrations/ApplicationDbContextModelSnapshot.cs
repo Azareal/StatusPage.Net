@@ -128,13 +128,19 @@ namespace StatusPage.Net.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("End");
+
                     b.Property<string>("Name");
 
                     b.Property<int?>("SiteId");
 
+                    b.Property<DateTime>("Start");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SiteId");
+
+                    b.HasIndex("Start");
 
                     b.ToTable("Incidents");
                 });
@@ -180,6 +186,19 @@ namespace StatusPage.Net.Data.Migrations
                     b.HasIndex("Visible");
 
                     b.ToTable("PingSetting");
+                });
+
+            modelBuilder.Entity("StatusPage.Net.Data.Setting", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("StatusPage.Net.Data.Site", b =>

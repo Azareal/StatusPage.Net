@@ -19,11 +19,32 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img style="height: 32px; display: inline" src="~/images/logo_square_200.png"/> Status</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    @foreach (var link in new[]{new{Url = "https://royalroadl.com", Text = "Home"}, new { Url = "https://royalroadl.com/support", Text = "Support" } })
+                    {
+                        <li><a href="@link.Url">@link.Text</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - StatusPage.Net</p>
+            <p>&copy; 2017 - StatusPage.Net | <a asp-action="Index" asp-controller="Home" asp-area="Dashboard">Dashboard</a></p>
         </footer>
     </div>
 

@@ -1,4 +1,12 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.EntityFrameworkCore
+@using StatusPage.Net.Data
+@using StatusPage.Net.Misc.Extensions
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext Db
+@{
+    var siteName = ((await Db.Settings.FirstOrDefaultAsync(x => x.Id == "SiteName"))?.Value ?? "StatusPage.Net");
+}
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
@@ -11,7 +19,6 @@
     <meta content="" name="description" />
     <meta content="kanadaj" name="author" />
 
-    <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="~/lib/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
 
@@ -20,122 +27,109 @@
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
 
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/css/animate.min.css" rel="stylesheet" />
-    <link href="~/css/style.min.css" rel="stylesheet" />
-    <link href="~/css/style-responsive.min.css" rel="stylesheet" />
-    <link href="~/css/theme/default.css" rel="stylesheet" id="theme" />
-    <!-- ================== END BASE CSS STYLE ================== -->
-    <!-- ================== BEGIN BASE JS ================== -->
-    <script src="~/lib/pace/pace.min.js"></script>
-    <!-- ================== END BASE JS ================== -->
+    <link href="~/lib/nprogress/nprogress.css" rel="stylesheet">
+    <link href="~/lib/gentelella/build/css/custom.min.css" asp-append-version="true" rel="stylesheet">
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
-<body>
-    <!-- begin #page-loader -->
-    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
-    <!-- end #page-loader -->
-    <!-- begin #page-container -->
-    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
-        <!-- begin #header -->
-        <div id="header" class="header navbar navbar-default navbar-fixed-top">
-            <!-- begin container-fluid -->
-            <div class="container-fluid">
-                <!-- begin mobile sidebar expand / collapse button -->
-                <div class="navbar-header">
-                    <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> Color Admin</a>
-                    <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><small><span class="label label-primary">@string.Join("", siteName.Split(' ').Select(x => x.First()))</span> <span class="small">@siteName</span></small></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            @Html.GravatarImage((await UserManager.GetUserAsync(User)).Email, 80, HtmlHelperExtensions.DefaultImage.Default, "img-circle profile_img")
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>@User.Identity.Name</h2>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <!-- end mobile sidebar expand / collapse button -->
-                <!-- begin header navigation right -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <form class="navbar-form full-width">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter keyword" />
-                                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                            </div>
-                        </form>
-                    </li>
-                    <li class="dropdown navbar-user">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="~/img/user-13.jpg" alt="" />
-                            <span class="hidden-xs">Adam Schwartz</span> <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu animated fadeInLeft">
-                            <li class="arrow"></li>
-                            <li><a href="javascript:;">Edit Profile</a></li>
-                            <li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
-                            <li><a href="javascript:;">Calendar</a></li>
-                            <li><a href="javascript:;">Setting</a></li>
-                            <li class="divider"></li>
-                            <li><a href="javascript:;">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- end header navigation right -->
             </div>
-            <!-- end container-fluid -->
-        </div>
-        <!-- end #header -->
-        <!-- begin #sidebar -->
-        <div id="sidebar" class="sidebar">
-            <!-- begin sidebar scrollbar -->
-            <div data-scrollbar="true" data-height="100%">
-                <!-- begin sidebar user -->
-                <ul class="nav">
-                    <li class="nav-profile">
-                        <div class="image">
-                            <a href="javascript:;"><img src="~/img/user-13.jpg" alt="" /></a>
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
-                        <div class="info">
-                            Sean Ngu
-                            <small>Front end developer</small>
-                        </div>
-                    </li>
-                </ul>
-                <!-- end sidebar user -->
-                <!-- begin sidebar nav -->
-                <ul class="nav">
-                    <li class="nav-header">Navigation</li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-laptop"></i>
-                            <span>Dashboard</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="index.html">Dashboard v1</a></li>
-                            <li><a href="index_v2.html">Dashboard v2</a></li>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+
+                                    @Html.GravatarImage((await UserManager.GetUserAsync(User)).Email, 80, HtmlHelperExtensions.DefaultImage.Default) @User.Identity.Name
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    @*<li><a href="javascript:;"> Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="javascript:;">Help</a></li>*@
+                                    <li>
+                                        <form style="display: inline" asp-action="Logout" asp-controller="Account" asp-antiforgery="true">
+                                            <button><i class="fa fa-sign-out pull-right"></i> Log Out</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
-                    </li>
-                    <!-- begin sidebar minify button -->
-                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
-                    <!-- end sidebar minify button -->
-                </ul>
-                <!-- end sidebar nav -->
+                    </nav>
+                </div>
             </div>
-            <!-- end sidebar scrollbar -->
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    StatusPage.Net by <a href="https://royalroadl.com">Royal Road&trade;</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
         </div>
-        <div class="sidebar-bg"></div>
-        <!-- end #sidebar -->
-        <!-- begin #content -->
-        <div id="content" class="content">
-            @RenderBody()
-        </div>
-        <!-- end #content -->
-        <!-- begin scroll to top btn -->
-        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
-        <!-- end scroll to top btn -->
     </div>
-    <!-- end page container -->
-    <!-- ================== BEGIN BASE JS ================== -->
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/fastclick/lib/fastclick.js"></script>
+        <script src="~/lib/nprogress/nprogress.js"></script>
+        <script src="~/lib/gentelella/build/js/custom.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -150,20 +144,11 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/nprogress/nprogress.js"></script>
+        <script src="~/lib/fastclick/lib/fastclick.js"></script>
+        <script src="~/lib/gentelella/build/js/custom.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-    <script src="~/lib/jquery/jquery-migrate-1.1.0.min.js"></script>
-    <script src="~/lib/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <!--[if lt IE 9]>
-        <script src="~/crossbrowserjs/html5shiv.js"></script>
-        <script src="~/crossbrowserjs/respond.min.js"></script>
-        <script src="~/crossbrowserjs/excanvas.min.js"></script>
-    <![endif]-->
-    <script src="~/lib/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
-    <!-- ================== END BASE JS ================== -->
-    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-    <script src="~/js/apps.min.js"></script>
-    <!-- ================== END PAGE LEVEL JS ================== -->
 
     @RenderSection("Scripts", required: false)
 

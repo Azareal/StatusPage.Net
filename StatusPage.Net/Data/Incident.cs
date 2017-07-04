@@ -14,5 +14,7 @@ namespace StatusPage.Net.Data
         public virtual ICollection<StatusMessage> Messages { get; set; }
         public int? SiteId { get; set; }
         public Site Site { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime? End { get; set; }
     }
 }

@@ -9,11 +9,12 @@ namespace StatusPage.Net.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Prompt = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Prompt = "Password")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

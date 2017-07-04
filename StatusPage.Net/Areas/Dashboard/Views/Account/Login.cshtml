@@ -1,4 +1,5 @@
-﻿@using System.Collections.Generic
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using System.Collections.Generic
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
 @model LoginViewModel
@@ -15,111 +16,130 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Color Admin | Login Page</title>
+    <title>@ViewData["Title"] - StatusPage.Net</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
-    <meta content="" name="author" />
+    <meta content="kanadaj" name="author" />
 
-    <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="~/lib/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/css/animate.min.css" rel="stylesheet" />
-    <link href="~/css/style.min.css" rel="stylesheet" />
-    <link href="~/css/style-responsive.min.css" rel="stylesheet" />
-    <link href="~/css/theme/default.css" rel="stylesheet" id="theme" />
-    <!-- ================== END BASE CSS STYLE ================== -->
-    <!-- ================== BEGIN BASE JS ================== -->
-    <script src="~/lib/pace/pace.min.js"></script>
-    <!-- ================== END BASE JS ================== -->
+    <link href="~/lib/nprogress/nprogress.css" rel="stylesheet">
+    <link href="~/lib/gentelella/build/css/custom.min.css" rel="stylesheet">
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 
-<body class="pace-top">
-    <!-- begin #page-loader -->
-    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
-    <!-- end #page-loader -->
-    <!-- begin #page-container -->
-    <div id="page-container" class="fade">
-        <!-- begin login -->
-        <div class="login bg-black animated fadeInDown">
-            <!-- begin brand -->
-            <div class="login-header">
-                <div class="brand">
-                    <span><img src="~/images/logo_square_200.png" style="width: 48px; height: 48px"/></span> StatusPage.Net
-                    <small>Modern .NET Core status page</small>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-sign-in"></i>
-                </div>
+<body class="login">
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                        <h1>Login</h1>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div>
+                            <input asp-for="Username" required="" class="form-control"/>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <input asp-for="Password" required=""  class="form-control"/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label>
+                                <input asp-for="RememberMe" type="checkbox" /> Remember Me
+                            </label>
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit">Log in</button>
+                            <a asp-action="ForgotPassword" class="reset_pass">Lost your password?</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1><i class="fa fa-info"></i> StatusPage.Net</h1>
+                            </div>
+                        </div>
+                    </form>
+                </section>
             </div>
-            <!-- end brand -->
-            <div class="login-content">
-                <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="margin-bottom-0">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group m-b-20">
-                        <input asp-for="Email" class="form-control input-lg inverse-mode no-border" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group m-b-20">
-                        <input asp-for="Password" class="form-control input-lg inverse-mode no-border" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="checkbox m-b-20">
-                        <label>
-                            <input asp-for="RememberMe" type="checkbox" /> Remember Me
-                        </label>
-                    </div>
-                    <div class="login-buttons">
-                        <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
-                    </div>
-                </form>
+
+            <div id="register" class="animate form registration_form">
+                <section class="login_content">
+                    <form>
+                        <h1>Create Account</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Username" required="" />
+                        </div>
+                        <div>
+                            <input type="email" class="form-control" placeholder="Email" required="" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="Password" required="" />
+                        </div>
+                        <div>
+                            <a class="btn btn-default submit" href="index.html">Submit</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">
+                                Already a member ?
+                                <a href="#signin" class="to_register"> Log in </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
             </div>
         </div>
-        <!-- end login -->
     </div>
-    <!-- end page container -->
-    <!-- ================== BEGIN BASE JS ================== -->
-
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-    </environment>
-    <script src="~/lib/jquery/jquery-migrate-1.1.0.min.js"></script>
-    <script src="~/lib/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <!--[if lt IE 9]>
-        <script src="~/crossbrowserjs/html5shiv.js"></script>
-        <script src="~/crossbrowserjs/respond.min.js"></script>
-        <script src="~/crossbrowserjs/excanvas.min.js"></script>
-    <![endif]-->
-    <script src="~/lib/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
-    <!-- ================== END BASE JS ================== -->
-    @(await Html.PartialAsync("_ValidationScriptsPartial"))
-    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-    <script src="~/js/apps.min.js"></script>
-    <!-- ================== END PAGE LEVEL JS ================== -->
-
-    <script>
-        $(document).ready(function () {
-            App.init();
-        });
+    
+<environment names="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/nprogress/nprogress.js"></script>
+    <script src="~/lib/fastclick/lib/fastclick.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
     </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+    <script src="~/lib/fastclick/lib/fastclick.js"></script>
+    <script src="~/lib/nprogress/nprogress.js"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
+    @(await Html.PartialAsync("_ValidationScriptsPartial"))
 </body>
 </html>
