@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Settings";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>Settings</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a asp-action="Index" asp-controller="Home">Home</a>
+            </li>
+            <li class="active">
+                <strong>Settings</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-4">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Configure</h5>
+            </div>
+            <div class="ibox-content">
+                <p class="text-center">
+                    <a asp-action="Config"><i class="fa fa-cog big-icon"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Accounts</h5>
+            </div>
+            <div class="ibox-content">
+                <p class="text-center">
+                    <a asp-action="Accounts"><i class="fa fa-user big-icon"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Roles</h5>
+            </div>
+            <div class="ibox-content">
+                <p class="text-center">
+                    <a asp-action="Roles"><i class="fa fa-user-circle big-icon"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,31 +8,34 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     </environment>
+    <link href="~/lib/font-awesome/css/font-awesome-core.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome-solid.css" rel="stylesheet" />
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                        aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img style="height: 32px; display: inline" src="~/images/logo_square_200.png"/> Status</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img alt="logo" class="img-responsive" style="height: 40px;" src="~/images/logo_square_200.png" /> Status</a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav navbar-right">
-                    @foreach (var link in new[]{new{Url = "https://royalroadl.com", Text = "Home"}, new { Url = "https://royalroadl.com/support", Text = "Support" } })
+                    @foreach (var link in new[] { new { Url = "https://royalroadl.com", Text = "Home" }, new { Url = "https://royalroadl.com/support", Text = "Support" } })
                     {
                         <li><a href="@link.Url">@link.Text</a></li>
                     }
@@ -40,11 +43,13 @@
             </div>
         </div>
     </nav>
+    @RenderBody()
     <div class="container body-content">
-        @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2017 - StatusPage.Net | <a asp-action="Index" asp-controller="Home" asp-area="Dashboard">Dashboard</a></p>
+        <footer class="text-right">
+            <p>
+                &copy; 2017 - StatusPage.Net | <a asp-action="Index" asp-controller="Home" asp-area="Dashboard">Dashboard</a>
+            </p>
         </footer>
     </div>
 

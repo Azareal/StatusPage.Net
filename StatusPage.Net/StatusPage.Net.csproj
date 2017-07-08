@@ -23,11 +23,16 @@
     <Content Include="wwwroot\css\style-responsive.css" />
     <Content Include="wwwroot\css\style-responsive.min.css" />
     <Content Include="wwwroot\css\style.css" />
+    <Content Include="wwwroot\gentelella\build\css\custom.css" />
+    <Content Include="wwwroot\gentelella\build\css\custom.min.css" />
+    <Content Include="wwwroot\gentelella\build\js\custom.js" />
+    <Content Include="wwwroot\gentelella\build\js\custom.min.js" />
     <Content Include="wwwroot\images\android-chrome-48x48.png" />
     <Content Include="wwwroot\images\logo.png" />
     <Content Include="wwwroot\images\logo_square_200.png" />
     <Content Include="wwwroot\js\apps.js" />
     <Content Include="wwwroot\js\apps.min.js" />
+    <Content Include="wwwroot\js\jquery.sparkline.min.js" />
     <Content Include="wwwroot\lib\jquery-cookie\jquery.cookie.js" />
     <Content Include="wwwroot\lib\jquery-ui\AUTHORS.txt" />
     <Content Include="wwwroot\lib\jquery-ui\external\globalize.culture.de-DE.js" />

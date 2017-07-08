@@ -1,0 +1,51 @@
+﻿@inject UserManager<ApplicationUser> UserManager
+@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Accounts</h3>
+    </div>
+
+    <div class="title_right">
+        <a class="btn btn-primary pull-right" asp-action="CreateAccount"><i class="fa fa-plus"></i> Add New</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th colspan="2" style="width: 1%; text-align: center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Email</td>
+                            <td>@string.Join(",", await UserManager.GetRolesAsync(user))</td>
+                            <td>
+                                <a asp-action="AddToRole" asp-controller="Settings" asp-route-id="@user.Id" class="btn btn-primary btn-xs">Add to Role</a>
+                            </td>
+                            <td>
+                                <form class="inline">
+                                    <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

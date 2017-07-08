@@ -8,6 +8,7 @@
     "jquery-validation-unobtrusive": "3.2.6",
     "gentelella": "1.4.0",
     "nprogress": "v0.2.0",
-    "fastclick": "v1.0.6"
+    "fastclick": "v1.0.6",
+    "iCheck": "1.0.2"
   }
 }

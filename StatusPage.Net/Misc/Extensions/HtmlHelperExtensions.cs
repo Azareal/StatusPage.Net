@@ -9,11 +9,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace StatusPage.Net.Misc.Extensions
 {
     public static class HtmlHelperExtensions
     {
+
+        public static HtmlString Ago<T>(this IHtmlHelper<T> helper, DateTime dt, string extra = "")
+        {
+            return new HtmlString($"<time format=\"ago\" {extra}>{(System.DateTime.UtcNow - dt).ToPrettyFormat()}</time>");
+        }
+        public static HtmlString AgoShort<T>(this IHtmlHelper<T> helper, DateTime dt, string extra = "")
+        {
+            return new HtmlString($"<time format=\"ago\" {extra}>{(System.DateTime.UtcNow - dt).ToPrettyFormatShort()}</time>");
+        }
+
         /// <summary>
         /// In addition to allowing you to use your own image, Gravatar has a number of built in options which you can also use as defaults. Most of these work by taking the requested email hash and using it to generate a themed image that is unique to that email address
         /// </summary>

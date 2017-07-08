@@ -1,14 +1,76 @@
-﻿@{
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@{
     ViewData["Title"] = "Error";
+    Layout = "";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - StatusPage.Net</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="kanadaj" name="author" />
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
-</p>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="~/lib/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/nprogress/nprogress.css" rel="stylesheet">
+    <link href="~/lib/gentelella/build/css/custom.min.css" rel="stylesheet">
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <!-- page content -->
+            <div class="col-md-12">
+                <div class="col-middle">
+                    <div class="text-center">
+                        <h1 class="error-number">500</h1>
+                        <h2>Internal Server Error</h2>
+                        <p>
+                            We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing. @*<a href="#">Report this?</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/nprogress/nprogress.js"></script>
+        <script src="~/lib/fastclick/lib/fastclick.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/lib/fastclick/lib/fastclick.js"></script>
+        <script src="~/lib/nprogress/nprogress.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+</body>
+</html>

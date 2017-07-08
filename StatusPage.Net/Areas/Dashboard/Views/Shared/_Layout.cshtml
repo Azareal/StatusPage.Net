@@ -21,14 +21,16 @@
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="~/lib/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/lib/iCheck/skins/flat/green.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
 
-    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome-core.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome-solid.css" rel="stylesheet" />
     <link href="~/lib/nprogress/nprogress.css" rel="stylesheet">
-    <link href="~/lib/gentelella/build/css/custom.min.css" asp-append-version="true" rel="stylesheet">
+    <link href="~/gentelella/build/css/custom.min.css" asp-append-version="true" rel="stylesheet">
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body class="nav-md">
@@ -37,7 +39,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><small><span class="label label-primary">@string.Join("", siteName.Split(' ').Select(x => x.First()))</span> <span class="small">@siteName</span></small></a>
+                        <a asp-action="Index" asp-controller="Home" class="site_title"><small><img src="~/images/logo_square_200.png" style="width: 32px"/> <span class="small">@siteName</span></small></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -63,10 +65,19 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
-                                    </ul>
+                                    <a asp-action="Index" asp-controller="Home"><i class="fa fa-fw fa-home"></i> Home</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Status"><i class="fa fa-fw fa-exchange fa-rotate-90"></i> Status</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-controller="Ping"><i class="fa fa-fw fa-signal"></i> Ping</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Accounts" asp-controller="Settings"><i class="fa fa-fw fa-user"></i> Accounts</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Config" asp-controller="Settings"><i class="fa fa-fw fa-cog"></i> Settings</a>
                                 </li>
                             </ul>
                         </div>
@@ -128,7 +139,8 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/fastclick/lib/fastclick.js"></script>
         <script src="~/lib/nprogress/nprogress.js"></script>
-        <script src="~/lib/gentelella/build/js/custom.js"></script>
+        <script src="~/lib/iCheck/iCheck.js"></script>
+        <script src="~/gentelella/build/js/custom.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
@@ -146,16 +158,11 @@
         </script>
         <script src="~/lib/nprogress/nprogress.js"></script>
         <script src="~/lib/fastclick/lib/fastclick.js"></script>
-        <script src="~/lib/gentelella/build/js/custom.min.js"></script>
+        <script src="~/lib/iCheck/iCheck.js"></script>
+        <script src="~/gentelella/build/js/custom.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
-
-    <script>
-        $(document).ready(function () {
-            App.init();
-        });
-    </script>
 </body>
 </html>

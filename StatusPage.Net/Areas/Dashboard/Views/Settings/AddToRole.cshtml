@@ -1,0 +1,68 @@
+﻿@using LegendsAnalytics.Models
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@model LegendsAnalytics.Models.ApplicationUser
+@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Create Role";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>Add to Role</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a asp-action="Index" asp-controller="Home">Home</a>
+            </li>
+            <li>
+                Settings
+            </li>
+            <li>
+                <a asp-action="Accounts" asp-controller="Settings">Accounts</a>
+            </li>
+            <li class="active">
+                <strong>Add to Role</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form" role="form" asp-action="AddToRole">
+                            <div asp-validation-summary="All"></div>
+                            <input type="hidden" asp-for="Id"/>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <span class="form-control">@Model.UserName</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select name="roleId" required="" class="form-control">
+                                    @foreach (var role in RoleManager.Roles.ToList())
+                                    {
+                                        if (!await UserManager.IsInRoleAsync(Model, role.Name))
+                                        {
+                                            <option value="@role.Id">@role.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Add to Role</strong></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

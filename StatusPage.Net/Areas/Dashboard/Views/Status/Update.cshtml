@@ -1,0 +1,67 @@
+﻿@model CreateStatusMessageViewModel
+
+@{
+    ViewData["Title"] = "Update Incident";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Update Incident</h3>
+    </div>
+
+    <div class="title_right">
+
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal form-label-left" asp-action="Update" method="post" asp-antiforgery="true">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <input type="hidden" asp-for="IncidentId"/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" asp-for="Message"></label>
+                        <div class="col-sm-10">
+                            <textarea asp-for="Message" class="form-control"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" asp-for="Status"></label>
+                        <div class="col-sm-10">
+                            <p style="padding: 10px 0;">
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@StatusMessageType.Down" class="flat" /> <i class="fa fa-arrow-down"></i> Down
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@StatusMessageType.Investigating" class="flat" /> <i class="fa fa-search"></i> Investigating
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@StatusMessageType.Identified" class="flat" /> <i class="fa fa-crosshairs"></i> Identified
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@StatusMessageType.Monitoring" class="flat" /> <i class="fa fa-chart-bar"></i> Monitoring
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" asp-for="Status" value="@StatusMessageType.Okay" class="flat" /> <i class="fa fa-check"></i> Okay
+                                </label>
+                                <br />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">Update Incident</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

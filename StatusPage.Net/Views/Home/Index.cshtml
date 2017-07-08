@@ -1,8 +1,143 @@
-﻿@{
+﻿@using StatusPage.Net.Misc.Extensions
+@model StatusPage.Net.Models.HomeViewModels.StatusPageViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .sparkline-bar canvas {
+        display: block !important;
+        margin: 0 auto;
+        text-align: center;
+    }
+</style>
 
-<br/>
-<div class="alert alert-success">
-    <strong>Everything okay.</strong> All systems are operational. Enjoy.
+<div class="container">
+    <div class="section-header">
+        <h2>What's going on</h2>
+    </div>
+    @if (Model.Incidents.All(x => x.End != null))
+    {
+        <div class="alert alert-success"><strong>Everything okay.</strong> All systems are operational. Enjoy.</div>
+    }
+    else if (false)
+    {
+        <div class="alert alert-info"><strong>Undergoing maintenance.</strong> Hold your pants, it'll be over soon.</div>
+    }
+    else if (false)
+    {
+        <div class="panel maintenance">
+            <div class="panel-body">Maintenance scheduled for updates! ;)</div>
+            <div class="panel-footer">
+                Starting time: July 5th - 3PM GMT
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger"><strong>Site is Down.</strong> The site is currently on an unscheduled downtime. Check below for more information.</div>
+    }
+    @foreach (var incident in Model.Incidents.Where(x => x.End == null))
+    {
+        <div class="panel">
+            <div class="panel-body"><strong>The current issue</strong> - @incident.Name</div>
+            <ul class="ul list-group">
+                @foreach (var message in incident.Messages)
+                {
+                    <li class="list-group-item"><i class="@message.Color @message.Icon"></i> <strong>@Html.AgoShort(message.DateTime) ago</strong> @message.Description</li>
+                }
+            </ul>
+        </div>
+    }
 </div>
+<div class="container">
+    @if (Model.Pings.Any())
+    {
+        <div class="section-header">
+            <h2>Latency</h2>
+        </div>
+        foreach (var pingConfig in Model.Pings)
+        {
+            <div class="graph">
+                <div class="graph-header">
+                    Response time <span class="pull-right">350ms</span>
+                </div>
+                <div class="sparkline">@pingConfig.Select(x => x.ResponseTime)</div>
+            </div>
+        }
+    }
+</div>
+<div class="container">
+    <div class="section-header">
+        <h2>Uptime</h2>
+    </div>
+    <div class="graph">
+        <div class="graph-header">
+            Uptime last 60 days<span class="pull-right">@*99.99994%*@</span>
+        </div>
+        <div class="sparkline-bar"></div>
+    </div>
+</div>
+<div class="container">
+    <div class="section-header">
+        <h2>Past Incidents</h2>
+    </div>
+    @foreach (var incident in Model.Incidents.Where(x => x.End != null))
+    {
+        <div class="panel">
+            <div class="panel-body">
+                @incident.Name
+            </div>
+            <ul class="ul list-group">
+                @foreach (var message in incident.Messages)
+                {
+                    <li class="list-group-item"><i class="@message.Color @message.Icon"></i> <strong>@Html.AgoShort(message.DateTime) ago</strong> @message.Description</li>
+                }
+            </ul>
+            <div class="panel-footer">
+                <time datetime="">Posted @Html.AgoShort(incident.End ?? DateTime.UtcNow) ago</time>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="js/jquery.sparkline.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".sparkline").sparkline('html', {
+                width: "100%",
+                height: "50px",
+                lineColor: "#a2DD90",
+                fillColor: "#d3f7d3",
+                type: 'line',
+                chartRangeMin: 0,
+                spotColor: '',
+                minSpotColor: '',
+                maxSpotColor: '',
+            });
+            /*
+            * Values for the Uptime chart works as follows
+            * Array of 3 values where SUM should be equals to 3
+            * First value equals Red bar and should be used for major incidents
+            * Second value equals Yellow bar and should be used for Minor Incidents
+            * Third value equals Green bar and should be used for No incidents
+            */
+            var values = [@string.Join(",", Model.DailyStatusSummaries.Select(x=>$"[{x.DownTimePercentage},{x.HighPingPercentage},{100f - x.HighPingPercentage - x.DownTimePercentage}]"))];
+
+            var barWidth = $(window).width() > 670 ? (640 - 50) / 60 : ($(window).width() - 58) / 60;
+            console.log(barWidth);
+            $(".sparkline-bar").sparkline(values, {
+                width: "100%",
+                height: "50px",
+                stackedBarColor: ["#c55", "#FA9F47", "#a2DD90"],
+                type: 'bar',
+                barWidth: barWidth,
+                barSpacing: 1,
+                chartRangeMin: 0,
+                spotColor: '',
+                minSpotColor: '',
+                maxSpotColor: '',
+            });
+        });
+    </script>
+}

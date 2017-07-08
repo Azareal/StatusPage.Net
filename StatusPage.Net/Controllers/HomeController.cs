@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StatusPage.Net.Data;
+using StatusPage.Net.Misc.Extensions;
 using StatusPage.Net.Models;
 using StatusPage.Net.Models.HomeViewModels;
 
@@ -29,13 +30,30 @@ namespace StatusPage.Net.Controllers
                 return View("Setup");
             }
             var monthAgo = DateTime.UtcNow.AddDays(-30);
+            var twoMonthsAgo = DateTime.UtcNow.AddDays(-60);
             var dayAgo = DateTime.UtcNow.AddDays(-1);
-            var statusMessages = await _db.StatusMessages.Include(x => x.Incident).ThenInclude(x => x.Site).Where(x => x.DateTime > monthAgo).OrderByDescending(x=>x.IncidentId).ThenByDescending(x=>x.DateTime).ToListAsync();
+            var statusMessages = await _db.Incidents.Include(x => x.Messages).Include(x => x.Site).Where(x => x.Start > monthAgo).OrderByDescending(x=>x.Start).ToListAsync();
             var pings = (await _db.Pings.Where(x => x.PingSetting.Visible && x.DateTime > dayAgo).ToListAsync()).GroupBy(x=>x.PingSetting);
+            var today = DateTime.Today;
+            var dates = Enumerable.Range(1, 60).Select(x => today.AddDays(-x)).ToArray();
+            // TODO: Rewrite to include all incidents every day
+            var sql = $@"
+SELECT CAST([Start] AS DATE) Date, DATEDIFF(SECOND, MIN([End]), MIN([Start])) Duration, COUNT(*) [Count] FROM Incidents
+WHERE CAST([Start] AS DATE) > N'{twoMonthsAgo:O}'
+GROUP BY CAST([Start] AS DATE)";
+            var incidentsPerDay = _db.Database.SqlQuery<IncidentDailySummary>(sql).ToList();
+            var pingSummaries = _db.Database.SqlQuery<PingSummary>($@"SELECT SUM(IIF(ResponseTime > 300, 1, 0)) [HighPingCount], COUNT(*) [Count], CAST([DateTime] AS DATE) [Date] FROM Pings WHERE CAST([DateTime] AS DATE) > N'{twoMonthsAgo:O}' GROUP BY CAST([DateTime] AS DATE);").ToList();
+            var summaries = dates.Select(x => new DailyStatusSummary()
+            {
+                Date = x,
+                DownTimePercentage = incidentsPerDay.FirstOrDefault(y => y.Date == x)?.Duration ?? 0 / 86400,
+                HighPingPercentage = (pingSummaries.FirstOrDefault(y => y.Date == x)?.HighPingCount / pingSummaries.FirstOrDefault(y => y.Date == x)?.Count) ?? 0
+            }).OrderBy(x=>x.Date).ToList();
             var viewModel = new StatusPageViewModel()
             {
-                StatusMessages = statusMessages,
-                Pings = pings
+                Incidents = statusMessages,
+                Pings = pings,
+                DailyStatusSummaries = summaries
             };
             return View(viewModel);
         }

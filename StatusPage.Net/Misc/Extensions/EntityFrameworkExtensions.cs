@@ -45,7 +45,11 @@ namespace StatusPage.Net.Misc.Extensions
                 logger.LogInformation($"Executed DbComment ({stopwatch.ElapsedMilliseconds:N0}ms) [Parameters=[], CommandType='Raw', CommandTimeout='{db.GetDbConnection().ConnectionTimeout}']\n\t{query}");
                 if (reader == null || !reader.HasRows)
                 {
-                    yield return default(T);
+                    if (closeAfterwards)
+                    {
+                        db.GetDbConnection().Close();
+                    }
+                    yield break;
                 }
                 else
                 {

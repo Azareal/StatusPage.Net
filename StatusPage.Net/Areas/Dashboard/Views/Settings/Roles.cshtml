@@ -1,0 +1,63 @@
+﻿@using LegendsAnalytics.Models
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@inject UserManager<ApplicationUser> UserManager
+@model List<IdentityRole>
+@{
+    ViewData["Title"] = "Roles";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>Roles</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a asp-action="Index" asp-controller="Home">Home</a>
+            </li>
+            <li>
+                <a asp-action="Index">Settings</a>
+            </li>
+            <li class="active">
+                <strong>Roles</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+            <a asp-action="CreateRole" class="btn btn-white"><i class="fa fa-plus"></i> New Role </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Users</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td>@role.Id</td>
+                                    <td>@role.Name</td>
+                                    <td>@((await UserManager.GetUsersInRoleAsync(role.Name)).Count)</td>
+                                    <td>
+                                        <form>
+                                            <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

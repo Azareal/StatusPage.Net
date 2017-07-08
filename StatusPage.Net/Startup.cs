@@ -54,6 +54,8 @@ namespace StatusPage.Net
 
             services.AddMvc();
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -64,7 +66,7 @@ namespace StatusPage.Net
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
