@@ -11,3 +11,7 @@ A simple, quick status page written in C#.
 # Installation Instructions
 
 ???
+
+# Images
+
+![Main View](https://github.com/kanadaj/StatusPage.Net/blob/master/images/image.png)
